@@ -194,7 +194,7 @@ def train_net(train_image_folder, train_mask_folder, val_image_folder,val_mask_f
             best_train_loss = train_loss
             best_train_model_state = model.state_dict()
 
-        torch.save(model.state_dict(), f"model15/epoch{epoch + 1}.pth")
+        torch.save(model.state_dict(), f"model/epoch{epoch + 1}.pth")
 
         print(f'Epoch: {epoch+1}, '
               f'Train Loss: {train_losses[-1]:.4f}, '
@@ -210,7 +210,7 @@ def train_net(train_image_folder, train_mask_folder, val_image_folder,val_mask_f
         scheduler.step()
         lr.append(scheduler.get_lr()[0])
 
-    fold_result_path = f"out/result/result_15.xlsx"
+    fold_result_path = f"out/result/result.xlsx"
 
     df = pd.DataFrame({'Train Loss': train_losses, 'Val Loss': val_losses,
                        'Train Accuracy': train_accuracies, 'Val Accuracy': val_accuracies,
@@ -219,16 +219,16 @@ def train_net(train_image_folder, train_mask_folder, val_image_folder,val_mask_f
     df.to_excel(fold_result_path, index=False)
 
     torch.save(best_val_model_state,
-               f"out/result/best_val_model_15.pth")
+               f"out/result/best_val_model.pth")
 
     torch.save(best_train_model_state,
-               f"out/result/best_train_model_15.pth")
+               f"out/result/best_train_model.pth")
 
     print(f'training completed.')
 
     plt.plot(np.arange(len(lr)), lr)
     plt.savefig(
-        f'out/picture/lr_15.png')
+        f'out/picture/lr.png')
     plt.show()
     plt.close()
 
@@ -239,7 +239,7 @@ def train_net(train_image_folder, train_mask_folder, val_image_folder,val_mask_f
     plt.title(f'Loss Over Epochs')
     plt.legend()
     plt.savefig(
-        f'out/picture/loss_15.png')
+        f'out/picture/loss.png')
     plt.show()
     plt.close()
 
@@ -250,7 +250,7 @@ def train_net(train_image_folder, train_mask_folder, val_image_folder,val_mask_f
     plt.title(f'Dice Score Over Epochs')
     plt.legend()
     plt.savefig(
-        f'out/picture/dice_score_15.png')
+        f'out/picture/dice_score.png')
     plt.show()
     plt.close()
 
@@ -261,7 +261,7 @@ def train_net(train_image_folder, train_mask_folder, val_image_folder,val_mask_f
     plt.title(f'IOU Over Epochs')
     plt.legend()
     plt.savefig(
-        f'out/picture/IOU_15.png')
+        f'out/picture/IOU.png')
     plt.show()
     plt.close()
 
@@ -271,15 +271,16 @@ def train_net(train_image_folder, train_mask_folder, val_image_folder,val_mask_f
     plt.ylabel('Accuracy')
     plt.title(f'Accuracy Over Epochs')
     plt.legend()
-    plt.savefig(f'out/picture/accuracy_15.png')
+    plt.savefig(f'out/picture/accuracy.png')
     plt.show()
     plt.close()
 
 if __name__ == "__main__":
-    train_image_folder = "data2/data_e/train_image"
-    train_mask_folder = "data2/data_e/train_mask"
-    val_image_folder = "data2/val/val_image"
-    val_mask_folder = "data2/val/val_mask"
-    label_files = "data2/data_e/label_enhance.xlsx"
+    train_image_folder = "data/data_e/train_image"
+    train_mask_folder = "data/data_e/train_mask"
+    val_image_folder = "data/val/val_image"
+    val_mask_folder = "data/val/val_mask"
+    label_files = "data/data_e/label_enhance.xlsx"
 
     train_net(train_image_folder, train_mask_folder, val_image_folder,val_mask_folder,label_files)
+
