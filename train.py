@@ -46,7 +46,7 @@ def train_net(train_image_folder, train_mask_folder, val_image_folder,val_mask_f
     val_dataset = CustomDataset(val_image_folder, val_mask_folder, label_files, transform)
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
-    all_epoch = 100
+    all_epoch = 150
     batch_size = 12
     alpha = 0.1
 
@@ -62,13 +62,13 @@ def train_net(train_image_folder, train_mask_folder, val_image_folder,val_mask_f
     optimizer = torch.optim.AdamW(model.parameters(), lr=3.5e-4, weight_decay=1e-5)
     scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(optimizer=optimizer, T_max=all_epoch)
 
-    num_malignant = 484
-    num_benign = 210
+    num_T = 448
+    num_NT = 279
 
     #分割和分类的损失函数
     criterion_seg = DiceLoss()
     # criterion_classification = nn.CrossEntropyLoss()
-    criterion_classification = WeightedFocalLoss(num_malignant, num_benign, gamma=2.0)
+    criterion_classification = WeightedFocalLoss(num_T, num_NT, gamma=2.0)
 
     best_val_loss = float('inf')
     best_val_model_state = None
